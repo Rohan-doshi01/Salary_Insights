@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import './App.css';
+import './App.css'; // Importing the CSS file
 import Chart from 'chart.js/auto';
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -109,22 +109,19 @@ function App() {
       </div>
       <div className="content">
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => setShowGraph(!showGraph)}
         >
           {showGraph ? 'Hide Graph' : 'Show Graph'}
         </button>
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => requestSort('averageSalary', 'ascending')}
         >
           Sort by Ascending
         </button>
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => requestSort('averageSalary', 'descending')}
         >
           Sort by Descending
@@ -140,8 +137,14 @@ function App() {
               </TableHead>
               <TableBody>
                 {sortedData.map((item, index) => (
-                  <TableRow key={index} onClick={() => handleFilter(item.year)}>
-                    <TableCell>{item.year}</TableCell>
+                  <TableRow key={index} >
+                    <TableCell><div
+                      className="clickable"
+                      onClick={() => handleFilter(item.year)}
+                      >
+                      {item.year}
+                      </div>
+                    </TableCell>
                     <TableCell>{item.totalJobs}</TableCell>
                     <TableCell>{item.averageSalary}</TableCell>
                   </TableRow>
@@ -152,11 +155,13 @@ function App() {
         {showGraph && <canvas id="salaryChart" ref={chartRef} width="300" height="150"></canvas>}
         {showDetailTable && (
           <div className="detail-table">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div className="table-header">
               <h2>Job Titles in {filterYear}</h2>
-              <IconButton onClick={() => setShowDetailTable(false)} style={{ marginLeft: 'auto' }}>
-                <CloseIcon />
-              </IconButton>
+              <div className="closeIconButtonContainer">
+                <IconButton onClick={() => setShowDetailTable(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </div>
             </div>
             <TableContainer component={Paper}>
               <Table>
