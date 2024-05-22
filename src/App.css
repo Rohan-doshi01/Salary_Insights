@@ -78,18 +78,23 @@ body {
   background-color: #42454a;
 }
 
-button {
-  background-color: #50505a;
-  color: #ffffff;
+.button {
+  background-color: #abb1be;
+  color: black;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  margin: 20px ;
+  margin: 20px;
+}
+.clickable {
+  cursor: pointer;
 }
 
-button:hover {
-  background-color: #50505a;
+.closeIconButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px; 
 }
 
 .chatbot-container {

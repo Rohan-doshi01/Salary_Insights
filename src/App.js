@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import './App.css';
-import './App.py';
+import './App.css'; // Importing the CSS file
 import Chart from 'chart.js/auto';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination } from '@mui/material';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Chatbot from './Chatbot';
 
 function App() {
   const [data, setData] = useState([]);
@@ -108,22 +109,19 @@ function App() {
       </div>
       <div className="content">
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => setShowGraph(!showGraph)}
         >
           {showGraph ? 'Hide Graph' : 'Show Graph'}
         </button>
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => requestSort('averageSalary', 'ascending')}
         >
           Sort by Ascending
         </button>
         <button
-          variant="contained"
-          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          className="button"
           onClick={() => requestSort('averageSalary', 'descending')}
         >
           Sort by Descending
@@ -139,8 +137,14 @@ function App() {
               </TableHead>
               <TableBody>
                 {sortedData.map((item, index) => (
-                  <TableRow key={index} onClick={() => handleFilter(item.year)}>
-                    <TableCell>{item.year}</TableCell>
+                  <TableRow key={index} >
+                    <TableCell><div
+                      className="clickable"
+                      onClick={() => handleFilter(item.year)}
+                      >
+                      {item.year}
+                      </div>
+                    </TableCell>
                     <TableCell>{item.totalJobs}</TableCell>
                     <TableCell>{item.averageSalary}</TableCell>
                   </TableRow>
@@ -151,14 +155,14 @@ function App() {
         {showGraph && <canvas id="salaryChart" ref={chartRef} width="300" height="150"></canvas>}
         {showDetailTable && (
           <div className="detail-table">
-            <h2>Job Titles in {filterYear}</h2>
-            <button
-              variant="contained"
-              style={{ backgroundColor: '#abb1be', color: 'black' }}
-              onClick={() => setShowDetailTable(false)}
-            >
-              Close
-            </button>
+            <div className="table-header">
+              <h2>Job Titles in {filterYear}</h2>
+              <div className="closeIconButtonContainer">
+                <IconButton onClick={() => setShowDetailTable(false)}>
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            </div>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -187,15 +191,7 @@ function App() {
             />
           </div>
         )}
-        <div className="chatbot-container">
-          <h2>Salaries Data Insights Chatbot</h2>
-          <iframe
-            src="http://localhost:8501"
-            width="100%"
-            height="500px"
-            title="Salaries Data Insights Chatbot"
-          ></iframe>
-        </div>
+        <Chatbot />
       </div>
     </div>
   );
