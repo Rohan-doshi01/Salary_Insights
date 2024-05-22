@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
-import './App.py';
 import Chart from 'chart.js/auto';
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination } from '@mui/material';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import Chatbot from './Chatbot';
 
 function App() {
   const [data, setData] = useState([]);
@@ -151,14 +152,12 @@ function App() {
         {showGraph && <canvas id="salaryChart" ref={chartRef} width="300" height="150"></canvas>}
         {showDetailTable && (
           <div className="detail-table">
-            <h2>Job Titles in {filterYear}</h2>
-            <button
-              variant="contained"
-              style={{ backgroundColor: '#abb1be', color: 'black' }}
-              onClick={() => setShowDetailTable(false)}
-            >
-              Close
-            </button>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2>Job Titles in {filterYear}</h2>
+              <IconButton onClick={() => setShowDetailTable(false)} style={{ marginLeft: 'auto' }}>
+                <CloseIcon />
+              </IconButton>
+            </div>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -187,15 +186,7 @@ function App() {
             />
           </div>
         )}
-        <div className="chatbot-container">
-          <h2>Salaries Data Insights Chatbot</h2>
-          <iframe
-            src="http://localhost:8501"
-            width="100%"
-            height="500px"
-            title="Salaries Data Insights Chatbot"
-          ></iframe>
-        </div>
+        <Chatbot />
       </div>
     </div>
   );
