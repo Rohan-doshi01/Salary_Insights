@@ -48,3 +48,9 @@ npm start
 - Click on a specific year in the table to filter job titles for that year.
 - Close the detailed job titles table using the close button.
 
+## Refrence
+- React: [React Documentation](https://legacy.reactjs.org/docs/getting-started.html)
+- Material-UI: [Material-UI Documentation](https://mui.com/)
+- Chart.js: [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
+- Axios: [Axios Documentation](https://axios-http.com/docs/intro)
+
