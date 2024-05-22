@@ -54,3 +54,5 @@ npm start
 - Chart.js: [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
 - Axios: [Axios Documentation](https://axios-http.com/docs/intro)
 
+## Author
+[Rohan Doshi](https://github.com/Rohan-doshi01)
