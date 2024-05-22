@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import './App.css';
+import './App.py';
 import Chart from 'chart.js/auto';
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, TablePagination } from '@mui/material';
 
 function App() {
   const [data, setData] = useState([]);
@@ -9,6 +11,9 @@ function App() {
   const [showGraph, setShowGraph] = useState(false);
   const [filteredJobTitles, setFilteredJobTitles] = useState([]);
   const [filterYear, setFilterYear] = useState('');
+  const [showDetailTable, setShowDetailTable] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
 
@@ -73,86 +78,124 @@ function App() {
     }
   }, [showGraph, sortedData, data.length]);
 
-  const handleFilter = () => {
-    console.log('Filtering data for year:', filterYear);
-    axios.get(`http://localhost:3000/api/salaries?year=${filterYear}`)
+  const handleFilter = (year) => {
+    console.log('Filtering data for year:', year);
+    setFilterYear(year);
+    axios.get(`http://localhost:3000/api/salaries?year=${year}`)
       .then(response => {
         console.log('Filtered jobs:', response.data);
         setFilteredJobTitles(response.data);
+        setShowDetailTable(true);
       })
       .catch(error => {
         console.error('Error filtering data:', error);
       });
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   return (
     <div className="App">
-      <h1>ML Engineer Salaries (2020 - 2024)</h1>
-      <div>
-        <button onClick={() => setShowGraph(!showGraph)}>
+      <div className="header">
+        <h1>ML Engineer Salaries (2020 - 2024)</h1>
+      </div>
+      <div className="content">
+        <button
+          variant="contained"
+          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          onClick={() => setShowGraph(!showGraph)}
+        >
           {showGraph ? 'Hide Graph' : 'Show Graph'}
         </button>
-        <button onClick={() => requestSort('averageSalary', 'ascending')}>Sort by Ascending</button>
-        <button onClick={() => requestSort('averageSalary', 'descending')}>Sort by Descending</button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th onClick={() => requestSort('year')}>Year</th>
-            <th onClick={() => requestSort('totalJobs')}>Total Jobs</th>
-            <th onClick={() => requestSort('averageSalary')}>Average Salary (USD)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedData.map((item, index) => (
-            <tr key={index}>
-              <td>{item.year}</td>
-              <td>{item.totalJobs}</td>
-              <td>{item.averageSalary}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {showGraph && <canvas id="salaryChart" ref={chartRef} width="300" height="150"></canvas>}
-      <div>
-        <h2>Filter Job Titles by Year</h2>
-        <input 
-          type="text" 
-          value={filterYear} 
-          onChange={(e) => setFilterYear(e.target.value)} 
-          placeholder="Enter year" 
-        />
-        <button onClick={handleFilter}>Filter</button>
-      </div>
-      {filteredJobTitles.length > 0 && (
-        <div>
-          <h2>Job Titles in {filterYear}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Job Title</th>
-                <th>Number of Jobs</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredJobTitles.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.job_title}</td>
-                  <td>{item.count}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <button
+          variant="contained"
+          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          onClick={() => requestSort('averageSalary', 'ascending')}
+        >
+          Sort by Ascending
+        </button>
+        <button
+          variant="contained"
+          style={{ backgroundColor: '#abb1be', color: 'black' }}
+          onClick={() => requestSort('averageSalary', 'descending')}
+        >
+          Sort by Descending
+        </button>
+        <div className="table-container">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell onClick={() => requestSort('year')}>Year</TableCell>
+                  <TableCell onClick={() => requestSort('totalJobs')}>Total Jobs</TableCell>
+                  <TableCell onClick={() => requestSort('averageSalary')}>Average Salary (USD)</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedData.map((item, index) => (
+                  <TableRow key={index} onClick={() => handleFilter(item.year)}>
+                    <TableCell>{item.year}</TableCell>
+                    <TableCell>{item.totalJobs}</TableCell>
+                    <TableCell>{item.averageSalary}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
         </div>
-      )}
-      <div>
-        <h2>Salaries Data Insights Chatbot</h2>
-        <iframe
-          src="http://localhost:8501"
-          width="100%"
-          height="500px"
-          title="Salaries Data Insights Chatbot"
-        ></iframe>
+        {showGraph && <canvas id="salaryChart" ref={chartRef} width="300" height="150"></canvas>}
+        {showDetailTable && (
+          <div className="detail-table">
+            <h2>Job Titles in {filterYear}</h2>
+            <button
+              variant="contained"
+              style={{ backgroundColor: '#abb1be', color: 'black' }}
+              onClick={() => setShowDetailTable(false)}
+            >
+              Close
+            </button>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Job Title</TableCell>
+                    <TableCell>Number of Jobs</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredJobTitles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{item.job_title}</TableCell>
+                      <TableCell>{item.count}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              component="div"
+              count={filteredJobTitles.length}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
+        )}
+        <div className="chatbot-container">
+          <h2>Salaries Data Insights Chatbot</h2>
+          <iframe
+            src="http://localhost:8501"
+            width="100%"
+            height="500px"
+            title="Salaries Data Insights Chatbot"
+          ></iframe>
+        </div>
       </div>
     </div>
   );

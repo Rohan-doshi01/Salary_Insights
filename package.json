@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.18",
+    "antd": "^5.17.3",
     "axios": "^1.7.1",
     "chart.js": "^4.4.3",
     "cors": "^2.8.5",
