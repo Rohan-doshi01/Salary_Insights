@@ -19,7 +19,22 @@ This project is a simple dashboard that displays ML engineer salaries data from 
 
 ## Installation
 
-1. Clone the repository:
+1. Clone the repository
 
 ```bash
 git clone https://github.com/your-username/ml-engineer-salaries-dashboard.git
+
+## Navigate to the project directory
+
+```bash
+cd ml-engineer-salaries-dashboard
+
+## Install dependencies
+
+```bash
+npm install
+
+## Start the development server
+
+```bash
+npm start
