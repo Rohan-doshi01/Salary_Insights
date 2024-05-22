@@ -1,4 +1,4 @@
-# ML Engineer Salaries Dashboard
+# Salaries Dashboard
 
 This project is a simple dashboard that displays ML engineer salaries data from the years 2020 to 2024. It allows users to visualize the average salary trends over the years, sort the data, and filter job titles based on the selected year.
 
@@ -22,13 +22,13 @@ This project is a simple dashboard that displays ML engineer salaries data from 
 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/ml-engineer-salaries-dashboard.git
+git clone https://github.com/Rohan-doshi01/Salary_Insights.git
 ```
 
 ## Navigate to the project directory
 
 ```bash
-cd ml-engineer-salaries-dashboard
+cd Salary_Insights
 ```
 
 ## Install dependencies
@@ -54,3 +54,5 @@ npm start
 - Chart.js: [Chart.js Documentation](https://www.chartjs.org/docs/latest/)
 - Axios: [Axios Documentation](https://axios-http.com/docs/intro)
 
+## Author
+[Rohan Doshi](https://github.com/Rohan-doshi01)
