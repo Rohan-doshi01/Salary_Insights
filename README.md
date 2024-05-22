@@ -42,3 +42,9 @@ npm install
 ```bash
 npm start
 ```
+## Usage
+- Click on "Show Graph" button to display the graph of average salary trends.
+- Click on "Sort by Ascending" or "Sort by Descending" buttons to sort the data accordingly.
+- Click on a specific year in the table to filter job titles for that year.
+- Close the detailed job titles table using the close button.
+
